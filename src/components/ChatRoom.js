@@ -1,45 +1,37 @@
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
-  getFirestore,
-  collection,
-  query,
-  onSnapshot,
-  orderBy,
-} from 'firebase/firestore';
-import firebaseConfig from 'services/firebaseConfig';
-
-// Initialize Firebase app
-const db = getFirestore(firebaseConfig);
+  getMessagesByChatRoomRef,
+  getChatRoomRef,
+} from 'services/firestoreUtils';
 
 function ChatRoom() {
   const { chatRoomId } = useParams();
-
-  // Subscribe to messages in the chat room
-  const chatRoomMessagesRef = collection(
-    db,
-    `chatRooms/${chatRoomId}/messages`
-  );
-  const messagesQuery = query(chatRoomMessagesRef, orderBy('timestamp'));
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
-      const messages = snapshot.docs.map((doc) => doc.data());
-      setMessages(messages);
-    });
+    const fetchMessages = async () => {
+      // Get a reference to the chat room
+      const chatRoomRef = getChatRoomRef(chatRoomId);
 
-    return () => {
-      unsubscribe();
+      // Fetch messages for the chat room
+      const messages = await getMessagesByChatRoomRef(chatRoomRef);
+      setMessages(messages);
     };
+
+    fetchMessages();
   }, [chatRoomId]);
+
+  console.warn(messages);
 
   return (
     <div>
       <h1>Chat Room {chatRoomId}</h1>
       <ul>
         {messages.map((message) => (
-          <li key={message.id}>{message.text}</li>
+          <li key={message.id}>
+            {message.sender.displayName}: {message.text}
+          </li>
         ))}
       </ul>
     </div>

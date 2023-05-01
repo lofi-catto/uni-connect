@@ -26,7 +26,7 @@ function Lobby() {
       await addUser(userName);
 
       // Get the chat room ID
-      const chatRoomId = getChatRoomId(chatRoomName);
+      const chatRoomId = await getChatRoomId(chatRoomName);
 
       // Navigate to chat room
       window.location.href = `/chat/${chatRoomId}`;
