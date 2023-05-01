@@ -7,7 +7,7 @@ import {
   onSnapshot,
   orderBy,
 } from 'firebase/firestore';
-import firebaseConfig from '../services/firebase';
+import firebaseConfig from 'services/firebaseConfig';
 
 // Initialize Firebase app
 const db = getFirestore(firebaseConfig);

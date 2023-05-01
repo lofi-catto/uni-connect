@@ -1,37 +1,13 @@
 import { useState } from 'react';
 import {
-  getFirestore,
-  collection,
-  addDoc,
-  doc,
-  setDoc,
-  where,
-  query,
-  getDocs,
-} from 'firebase/firestore';
-import firebaseConfig from '../services/firebase';
-
-// Initialize Firebase app
-const db = getFirestore(firebaseConfig);
+  checkChatRoomExists,
+  addUser,
+  getChatRoomId,
+} from 'services/firestoreUtils';
 
 function Lobby() {
   const [userName, setUserName] = useState('');
   const [chatRoomName, setChatRoomName] = useState('');
-  const [chatRoomExists, setChatRoomExists] = useState(false);
-
-  // Check if the chat room exists
-  const checkChatRoomExists = async () => {
-    try {
-      const q = query(
-        collection(db, 'chatRooms'),
-        where('name', '==', chatRoomName)
-      );
-      const querySnapshot = await getDocs(q);
-      setChatRoomExists(!querySnapshot.empty);
-    } catch (error) {
-      console.error('Error checking chat room existence: ', error);
-    }
-  };
 
   // Add a new user to Firestore and join the chat room
   const addUserAndJoinChatRoom = async (e) => {
@@ -39,7 +15,7 @@ function Lobby() {
 
     try {
       // Check if chat room exists
-      await checkChatRoomExists();
+      const chatRoomExists = await checkChatRoomExists(chatRoomName);
 
       if (!chatRoomExists) {
         alert('Chat room does not exist');
@@ -47,21 +23,10 @@ function Lobby() {
       }
 
       // Add the user to Firestore
-      const userRef = await addDoc(collection(db, 'users'), {
-        displayName: userName,
-      });
+      await addUser(userName);
 
       // Get the chat room ID
-      const q = query(
-        collection(db, 'chatRooms'),
-        where('name', '==', chatRoomName)
-      );
-      const querySnapshot = await getDocs(q);
-      const chatRoomId = querySnapshot.docs[0].id;
-
-      // Add the user to the chat room
-      const chatRoomUserRef = collection(db, `chatRooms/${chatRoomId}/users`);
-      await setDoc(doc(chatRoomUserRef, userRef.id), { user: userRef });
+      const chatRoomId = getChatRoomId(chatRoomName);
 
       // Navigate to chat room
       window.location.href = `/chat/${chatRoomId}`;
