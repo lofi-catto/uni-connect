@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import localForage from 'localforage';
 import {
   checkChatRoomExists,
   addUser,
@@ -6,6 +8,8 @@ import {
 } from 'services/firestoreUtils';
 
 function Lobby() {
+  const navigate = useNavigate();
+
   const [userName, setUserName] = useState('');
   const [chatRoomName, setChatRoomName] = useState('');
 
@@ -23,13 +27,20 @@ function Lobby() {
       }
 
       // Add the user to Firestore
-      await addUser(userName);
+      const userId = await addUser(userName);
+
+      //save userId to localForage
+      try {
+        await localForage.setItem('userId', userId);
+      } catch (error) {
+        console.log(error);
+      }
 
       // Get the chat room ID
       const chatRoomId = await getChatRoomId(chatRoomName);
 
       // Navigate to chat room
-      window.location.href = `/chat/${chatRoomId}`;
+      navigate(`/chat/${chatRoomId}`);
     } catch (error) {
       console.error('Error adding user and joining chat room: ', error);
     }

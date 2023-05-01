@@ -7,7 +7,10 @@ import {
   getDocs,
   doc,
   getDoc,
+  serverTimestamp,
   collectionGroup,
+  onSnapshot,
+  orderBy,
 } from 'firebase/firestore';
 import firebaseConfig from 'services/firebaseConfig';
 
@@ -60,9 +63,17 @@ export function getChatRoomRef(chatRoomId) {
   return doc(db, 'chatRooms', chatRoomId);
 }
 
+export function getUserRef(userId) {
+  return doc(db, 'users', userId);
+}
+
 export async function getMessagesByChatRoomRef(chatRoomRef) {
   const messagesRef = collectionGroup(db, 'messages');
-  const q = query(messagesRef, where('chatRoom', '==', chatRoomRef));
+  const q = query(
+    messagesRef,
+    where('chatRoom', '==', chatRoomRef),
+    orderBy('timestamp', 'asc')
+  );
 
   const querySnapshot = await getDocs(q);
 
@@ -83,7 +94,9 @@ export async function getMessagesByChatRoomRef(chatRoomRef) {
     };
 
     // Convert the timestamp field to a Date object
-    const timestamp = messageData.timestamp.toDate();
+    const timestamp = messageData.timestamp
+      ? messageData.timestamp.toDate()
+      : null;
 
     // Add the message object to the messages array
     messages.push({
@@ -95,4 +108,60 @@ export async function getMessagesByChatRoomRef(chatRoomRef) {
   }
 
   return messages;
+}
+
+export function subscribeToMessagesByChatRoomRef(chatRoomRef, callback) {
+  const messagesRef = collectionGroup(db, 'messages');
+  const q = query(
+    messagesRef,
+    where('chatRoom', '==', chatRoomRef),
+    orderBy('timestamp', 'asc')
+  );
+
+  return onSnapshot(q, (querySnapshot) => {
+    const messages = [];
+
+    querySnapshot.forEach((doc) => {
+      const messageData = doc.data();
+      const senderRef = messageData.sender;
+
+      // Fetch the user document for the sender reference
+      getDoc(senderRef).then((senderDoc) => {
+        const senderData = senderDoc.data();
+
+        // Convert the sender field to readable object
+        const sender = {
+          id: senderDoc.id,
+          displayName: senderData.displayName,
+        };
+
+        // Convert the timestamp field to a Date object
+        const timestamp = messageData.timestamp
+          ? messageData.timestamp.toDate()
+          : null;
+
+        // Add the message object to the messages array
+        messages.push({
+          id: doc.id,
+          text: messageData.text,
+          sender,
+          timestamp,
+        });
+
+        // Call the callback with the updated messages array
+        callback(messages);
+      });
+    });
+  });
+}
+
+export async function createMessage(text, senderRef, chatRoomRef) {
+  const messagesRef = collection(db, 'messages');
+  const newMessageRef = await addDoc(messagesRef, {
+    text,
+    sender: senderRef,
+    chatRoom: chatRoomRef,
+    timestamp: serverTimestamp(),
+  });
+  return newMessageRef.id;
 }
