@@ -107,13 +107,13 @@ function Lobby() {
 
   const handleNameChange = (e) => {
     e.preventDefault();
-    setUserName(e.target.value);
+    setUserName(e.target.value.trim());
     setErrorMessage('');
   };
 
   const handleRoomNameChange = (e) => {
     e.preventDefault();
-    setChatRoomName(e.target.value);
+    setChatRoomName(e.target.value.trim());
     setErrorMessage('');
   };
 
