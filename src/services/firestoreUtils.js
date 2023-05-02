@@ -67,92 +67,37 @@ export function getUserRef(userId) {
   return doc(db, 'users', userId);
 }
 
-export async function getMessagesByChatRoomRef(chatRoomRef) {
+export function getMessagesByChatRoomRef(chatRoomRef, callback) {
   const messagesRef = collectionGroup(db, 'messages');
-  const q = query(
-    messagesRef,
-    where('chatRoom', '==', chatRoomRef),
-    orderBy('timestamp', 'asc')
+
+  return onSnapshot(
+    query(
+      messagesRef,
+      where('chatRoom', '==', chatRoomRef),
+      orderBy('timestamp', 'asc')
+    ),
+    async (querySnapshot) => {
+      const messages = await Promise.all(
+        querySnapshot.docs.map(async (doc) => {
+          const data = doc.data();
+          const senderRef = data.sender;
+          const senderId = senderRef.id;
+          const senderDoc = await getDoc(senderRef);
+          const senderData = senderDoc.data();
+          const senderDisplayName = senderData.displayName;
+
+          return {
+            id: doc.id,
+            text: data.text,
+            timestamp: data.timestamp,
+            sender: { id: senderId, displayName: senderDisplayName },
+          };
+        })
+      );
+
+      callback(messages);
+    }
   );
-
-  const querySnapshot = await getDocs(q);
-
-  const messages = [];
-
-  for (const doc of querySnapshot.docs) {
-    const messageData = doc.data();
-    const senderRef = messageData.sender;
-
-    // Fetch the user document for the sender reference
-    const senderDoc = await getDoc(senderRef);
-    const senderData = senderDoc.data();
-
-    // Convert the sender field to readable object
-    const sender = {
-      id: senderDoc.id,
-      displayName: senderData.displayName,
-    };
-
-    // Convert the timestamp field to a Date object
-    const timestamp = messageData.timestamp
-      ? messageData.timestamp.toDate()
-      : null;
-
-    // Add the message object to the messages array
-    messages.push({
-      id: doc.id,
-      text: messageData.text,
-      sender,
-      timestamp,
-    });
-  }
-
-  return messages;
-}
-
-export function subscribeToMessagesByChatRoomRef(chatRoomRef, callback) {
-  const messagesRef = collectionGroup(db, 'messages');
-  const q = query(
-    messagesRef,
-    where('chatRoom', '==', chatRoomRef),
-    orderBy('timestamp', 'asc')
-  );
-
-  return onSnapshot(q, (querySnapshot) => {
-    const messages = [];
-
-    querySnapshot.forEach((doc) => {
-      const messageData = doc.data();
-      const senderRef = messageData.sender;
-
-      // Fetch the user document for the sender reference
-      getDoc(senderRef).then((senderDoc) => {
-        const senderData = senderDoc.data();
-
-        // Convert the sender field to readable object
-        const sender = {
-          id: senderDoc.id,
-          displayName: senderData.displayName,
-        };
-
-        // Convert the timestamp field to a Date object
-        const timestamp = messageData.timestamp
-          ? messageData.timestamp.toDate()
-          : null;
-
-        // Add the message object to the messages array
-        messages.push({
-          id: doc.id,
-          text: messageData.text,
-          sender,
-          timestamp,
-        });
-
-        // Call the callback with the updated messages array
-        callback(messages);
-      });
-    });
-  });
 }
 
 export async function createMessage(text, senderRef, chatRoomRef) {

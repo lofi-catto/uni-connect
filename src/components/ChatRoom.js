@@ -1,36 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import localForage from 'localforage';
 import {
-  getMessagesByChatRoomRef,
-  subscribeToMessagesByChatRoomRef,
   getChatRoomRef,
   getUserRef,
   createMessage,
 } from 'services/firestoreUtils';
+import MessageList from 'components/MessageList';
 
 function ChatRoom() {
   const { chatRoomId } = useParams();
-  const [messages, setMessages] = useState([]);
   const [newMessageText, setNewMessageText] = useState('');
-
-  useEffect(() => {
-    const chatRoomRef = getChatRoomRef(chatRoomId);
-
-    // Fetch messages for the chat room
-    const fetchMessages = async () => {
-      const messages = await getMessagesByChatRoomRef(chatRoomRef);
-      setMessages(messages);
-    };
-    fetchMessages();
-
-    // Subscribe to messages for the chat room
-    const unsubscribe = subscribeToMessagesByChatRoomRef(
-      chatRoomRef,
-      setMessages
-    );
-    return () => unsubscribe();
-  }, [chatRoomId]);
 
   const handleNewMessageSubmit = async (event) => {
     event.preventDefault();
@@ -53,17 +33,9 @@ function ChatRoom() {
   return (
     <div>
       <h1>Chat Room {chatRoomId}</h1>
-      {messages.length === 0 ? (
-        <p>Loading messages...</p>
-      ) : (
-        <ul>
-          {messages.map((message) => (
-            <li key={message.id}>
-              {message.sender.displayName}: {message.text}
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul>
+        <MessageList chatRoomId={chatRoomId} />
+      </ul>
       <form onSubmit={handleNewMessageSubmit}>
         <input
           type="text"
