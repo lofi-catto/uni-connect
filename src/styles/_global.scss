@@ -1,13 +1,43 @@
 @import 'variables.scss';
+@import 'mixins.scss';
+
+@import 'components/MessageList/styles.scss';
+@import 'components/MessageInput/styles.scss';
+@import 'components/ChatRoom/styles.scss';
+@import 'components/Lobby/styles.scss';
 
 html,
 body {
   font-family: $fontFamily;
   font-weight: 400;
   letter-spacing: 0.1px;
+  margin: 0;
+  min-height: 100vh;
+  background: #fafafa;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+input[type='text'],
+input[type='number'],
+textarea {
+  font-size: 16px;
+}
+
+.error-message {
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 10px;
+  margin: 5px 0;
+  text-align: center;
+  border: 1px solid $warningColor;
+  color: $warningColor;
 }

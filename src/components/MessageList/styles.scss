@@ -1,0 +1,33 @@
+.message-list-container {
+  margin-bottom: 16px;
+  flex: 1;
+  max-height: 70vh;
+  overflow: scroll;
+}
+
+.message-list {
+  list-style: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.message {
+  padding: 8px 16px;
+  margin-bottom: 8px;
+  background: $messageBackground;
+  border-radius: 18px;
+  text-align: left;
+  max-width: 50%;
+}
+
+.own {
+  background: $ownMessageBackground;
+  align-self: flex-end;
+  text-align: right;
+}
+
+.sender {
+  margin: 8px 0;
+}
