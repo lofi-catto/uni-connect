@@ -1,6 +1,10 @@
 .message-input-container {
   display: flex;
   gap: 4px;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
 }
 
 .message-input {

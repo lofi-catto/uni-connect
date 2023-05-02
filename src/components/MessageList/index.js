@@ -20,7 +20,7 @@ function MessageList({ chatRoomId, userId }) {
 
 function Message({ message, isOwnMessage }) {
   return (
-    <li className={['message', isOwnMessage && 'own'].join(' ')}>
+    <li className={['message', isOwnMessage ? 'own' : ''].join(' ')}>
       <h4 className="sender">
         {isOwnMessage ? 'You' : message.sender.displayName}
       </h4>
