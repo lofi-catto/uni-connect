@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import localForage from 'localforage';
 
+import { getChatRoomRef } from 'services/firestoreUtils';
+
 import MessageList from 'components/MessageList';
 import MessageInput from 'components/MessageInput';
 
@@ -35,6 +37,11 @@ function ChatRoom() {
       </div>
     );
   }
+
+  // Get a reference to the chat room
+  const chatRoomRef = getChatRoomRef(chatRoomId);
+
+  console.warn(chatRoomRef);
 
   return (
     <div>

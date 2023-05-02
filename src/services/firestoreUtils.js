@@ -7,6 +7,7 @@ import {
   getDocs,
   doc,
   getDoc,
+  deleteDoc,
   serverTimestamp,
   collectionGroup,
   onSnapshot,
@@ -14,24 +15,12 @@ import {
 } from 'firebase/firestore';
 import firebaseConfig from 'services/firebaseConfig';
 
+// TODO: Handle errors consistently
+
 // Initialize Firebase app
 const db = getFirestore(firebaseConfig);
 
-export async function checkChatRoomExists(roomName) {
-  // Query the chatRooms collection for a document with the matching name
-  return getDocs(
-    query(collection(db, 'chatRooms'), where('name', '==', roomName))
-  )
-    .then((querySnapshot) => {
-      // Return true if a document exists with the matching name, false otherwise
-      return !querySnapshot.empty;
-    })
-    .catch((error) => {
-      console.error('Error checking chat room:', error);
-      throw error;
-    });
-}
-
+/* USERS */
 export async function addUser(displayName) {
   try {
     // Add a new document with an automatically generated ID to the users collection
@@ -44,28 +33,21 @@ export async function addUser(displayName) {
   }
 }
 
-export async function getChatRoomId(chatRoomName) {
+export function getUserRef(userId) {
+  return doc(db, 'users', userId);
+}
+
+export async function deleteUser(userId) {
   try {
-    const q = query(
-      collection(db, 'chatRooms'),
-      where('name', '==', chatRoomName)
-    );
-    const querySnapshot = await getDocs(q);
-    const chatRoomId = querySnapshot.docs[0].id;
-    return chatRoomId;
+    const userRef = getUserRef(userId);
+    await deleteDoc(userRef);
   } catch (error) {
-    console.error('Error getting chat room ID:', error);
+    console.error(`Error deleting user with ID ${userId}:`, error);
     throw error;
   }
 }
 
-export function getChatRoomRef(chatRoomId) {
-  return doc(db, 'chatRooms', chatRoomId);
-}
-
-export function getUserRef(userId) {
-  return doc(db, 'users', userId);
-}
+/* MESSAGES */
 
 export function getMessagesByChatRoomRef(chatRoomRef, callback) {
   const messagesRef = collectionGroup(db, 'messages');
@@ -109,4 +91,56 @@ export async function createMessage(text, senderRef, chatRoomRef) {
     timestamp: serverTimestamp(),
   });
   return newMessageRef.id;
+}
+
+/* CHAT ROOM */
+
+export async function getChatRoomId(chatRoomName) {
+  try {
+    const q = query(
+      collection(db, 'chatRooms'),
+      where('name', '==', chatRoomName)
+    );
+    const querySnapshot = await getDocs(q);
+    const chatRoomId = querySnapshot.docs[0].id;
+    return chatRoomId;
+  } catch (error) {
+    console.error('Error getting chat room ID:', error);
+    throw error;
+  }
+}
+
+export function getChatRoomRef(chatRoomId) {
+  return doc(db, 'chatRooms', chatRoomId);
+}
+
+export async function checkChatRoomExists(roomName) {
+  // Query the chatRooms collection for a document with the matching name
+  return getDocs(
+    query(collection(db, 'chatRooms'), where('name', '==', roomName))
+  )
+    .then((querySnapshot) => {
+      // Return true if a document exists with the matching name, false otherwise
+      return !querySnapshot.empty;
+    })
+    .catch((error) => {
+      console.error('Error checking chat room:', error);
+      throw error;
+    });
+}
+
+export async function createChatRoom(name) {
+  const chatRoomsRef = collection(db, 'chatRooms');
+
+  const chatRoomExists = await checkChatRoomExists(name);
+  if (chatRoomExists) {
+    return new Error(
+      'Chat room with this name already exists, please use the join button'
+    );
+  }
+
+  // Create a new chat room document
+  const newChatRoomRef = await addDoc(chatRoomsRef, { name });
+
+  return newChatRoomRef.id;
 }
