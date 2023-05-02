@@ -52,7 +52,7 @@ function ChatRoom() {
         <Link to="/">Back to lobby</Link>
       </div>
       <ul>
-        <MessageList chatRoomId={chatRoomId} />
+        <MessageList chatRoomId={chatRoomId} userId={userId} />
       </ul>
       <MessageInput chatRoomId={chatRoomId} />
     </div>

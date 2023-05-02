@@ -36,16 +36,17 @@ function MessageInput({ chatRoomId }) {
   };
 
   return (
-    <form onSubmit={handleNewMessageSubmit}>
+    <form onSubmit={handleNewMessageSubmit} className="message-input-container">
       <input
         type="text"
         placeholder="Enter a message"
+        className="message-input"
         value={newMessageText}
         onChange={handleChange}
         required
         minLength={1}
       />
-      <button type="submit" disabled={!newMessageText}>
+      <button type="submit" disabled={!newMessageText} className="send-message">
         Send
       </button>
     </form>
