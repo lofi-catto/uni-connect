@@ -8,6 +8,7 @@ import {
   deleteUser,
   getChatRoomId,
 } from 'services/firestoreUtils';
+import { ReactComponent as ReactLogo } from 'assets/SVG/monash-logo-mono.svg';
 
 function Lobby() {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ function Lobby() {
     }
 
     if (!chatRoomName) {
-      setErrorMessage('Chat room name is required');
+      setErrorMessage('Chat room code is required');
       return;
     }
 
@@ -117,36 +118,36 @@ function Lobby() {
   };
 
   return (
-    <div>
-      <h1>Join a chat room</h1>
-      <form onSubmit={() => false}>
-        {errorMessage && <div>{errorMessage}</div>}
-        <label>
-          Name:
-          <input
-            type="text"
-            value={userName}
-            required
-            onChange={handleNameChange}
-          />
-        </label>
+    <div className="login-container">
+      <ReactLogo className="logo" />
+      <h1>Monash Connect</h1>
+      <form className="login-form" onSubmit={() => false}>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
         <br />
-        <label>
-          Chat room code:
-          <input
-            type="text"
-            value={chatRoomName}
-            required
-            onChange={handleRoomNameChange}
-          />
-        </label>
+        <input
+          placeholder="Enter Your Name"
+          type="text"
+          value={userName}
+          required
+          onChange={handleNameChange}
+        />
+        <br />
+        <input
+          placeholder="Enter Chat Room Code"
+          type="text"
+          value={chatRoomName}
+          required
+          onChange={handleRoomNameChange}
+        />
         <br />
         <button type="button" onClick={addUserAndJoinChatRoom}>
           Join Chat Room
         </button>
+        <br />
         <button type="button" onClick={createRoom}>
           Create New Room
         </button>
+        <br />
       </form>
     </div>
   );

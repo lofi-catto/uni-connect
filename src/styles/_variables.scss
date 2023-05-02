@@ -10,8 +10,10 @@ $screen-xxl: 1300px;
 $screen-full: 1400px;
 
 // Colors
-$textColor: #42474c;
-$textLight1Color: #6b7177;
+$white: rgb(255, 255, 255);
+
+$textColor: rgb(51, 51, 51);
+$textLightColor: #6b7177;
 
 $primaryDark2Color: #002e25;
 $primaryDark1Color: #004c3f;
@@ -25,7 +27,7 @@ $secondaryLight2Color: #fff8f6;
 $secondaryLight3Color: #e2e6dc;
 $secondaryLight4Color: #ede8db;
 
-$warningColor: #c43256;
+$warningColor: #e71f81;
 $warningLight1Color: #c432571f;
 
 $ownMessageBackground: rgb(250, 175, 0);
