@@ -1,6 +1,8 @@
 .message-list-container {
   margin-bottom: 16px;
   flex: 1;
+  min-height: 55vh;
+  max-height: 60vh;
   overflow: scroll;
 }
 
@@ -18,6 +20,7 @@
   background: $messageBackground;
   border-radius: 18px;
   text-align: left;
+  max-width: 50%;
 }
 
 .own {

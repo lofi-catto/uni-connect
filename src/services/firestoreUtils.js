@@ -99,7 +99,7 @@ export async function getChatRoomId(chatRoomName) {
   try {
     const q = query(
       collection(db, 'chatRooms'),
-      where('name', '==', chatRoomName)
+      where('name', '==', chatRoomName.toLowerCase())
     );
     const querySnapshot = await getDocs(q);
     const chatRoomId = querySnapshot.docs[0].id;
@@ -127,7 +127,10 @@ export async function getChatRoomById(chatRoomId) {
 export async function checkChatRoomExists(roomName) {
   // Query the chatRooms collection for a document with the matching name
   return getDocs(
-    query(collection(db, 'chatRooms'), where('name', '==', roomName))
+    query(
+      collection(db, 'chatRooms'),
+      where('name', '==', roomName.toLowerCase())
+    )
   )
     .then((querySnapshot) => {
       // Return true if a document exists with the matching name, false otherwise
@@ -142,7 +145,7 @@ export async function checkChatRoomExists(roomName) {
 export async function createChatRoom(name) {
   const chatRoomsRef = collection(db, 'chatRooms');
 
-  const chatRoomExists = await checkChatRoomExists(name);
+  const chatRoomExists = await checkChatRoomExists(name.toLowerCase());
   if (chatRoomExists) {
     return new Error(
       'Chat room with this name already exists, please use the join button'

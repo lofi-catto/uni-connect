@@ -46,10 +46,10 @@ function ChatRoom() {
   }
 
   return (
-    <div>
-      <h1>Chat Room {chatRoom?.name}</h1>
-      <div>
+    <div className="chat-room-container">
+      <div className="chat-room-title">
         <Link to="/">Back to lobby</Link>
+        <h2>Room Code: {chatRoom?.name}</h2>
       </div>
       <ul>
         <MessageList chatRoomId={chatRoomId} userId={userId} />
