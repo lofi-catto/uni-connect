@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import localForage from 'localforage';
 
-import { getChatRoomRef } from 'services/firestoreUtils';
+import { getChatRoomById } from 'services/firestoreUtils';
 
 import MessageList from 'components/MessageList';
 import MessageInput from 'components/MessageInput';
@@ -12,6 +11,7 @@ function ChatRoom() {
   const navigate = useNavigate();
   const { chatRoomId } = useParams();
   const [userId, setUserId] = useState(false);
+  const [chatRoom, setChatRoom] = useState();
 
   useEffect(() => {
     // get current user id from localforage
@@ -20,8 +20,15 @@ function ChatRoom() {
       setUserId(userId);
     };
 
+    const fetchChatRoom = async () => {
+      // Get a reference to the chat room
+      const chatRoom = await getChatRoomById(chatRoomId);
+      setChatRoom(chatRoom);
+    };
+
     fetchUserId();
-  }, []);
+    fetchChatRoom();
+  }, [chatRoomId]);
 
   if (!userId || !chatRoomId) {
     return (
@@ -38,14 +45,12 @@ function ChatRoom() {
     );
   }
 
-  // Get a reference to the chat room
-  const chatRoomRef = getChatRoomRef(chatRoomId);
-
-  console.warn(chatRoomRef);
-
   return (
     <div>
-      <h1>Chat Room {chatRoomId}</h1>
+      <h1>Chat Room {chatRoom?.name}</h1>
+      <div>
+        <Link to="/">Back to lobby</Link>
+      </div>
       <ul>
         <MessageList chatRoomId={chatRoomId} />
       </ul>

@@ -114,6 +114,16 @@ export function getChatRoomRef(chatRoomId) {
   return doc(db, 'chatRooms', chatRoomId);
 }
 
+export async function getChatRoomById(chatRoomId) {
+  const chatRoomRef = doc(db, 'chatRooms', chatRoomId);
+  const chatRoomSnapshot = await getDoc(chatRoomRef);
+  if (chatRoomSnapshot.exists()) {
+    return chatRoomSnapshot.data();
+  } else {
+    throw new Error(`Chat room with ID ${chatRoomId} does not exist`);
+  }
+}
+
 export async function checkChatRoomExists(roomName) {
   // Query the chatRooms collection for a document with the matching name
   return getDocs(
