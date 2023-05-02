@@ -2,19 +2,22 @@
   display: flex;
   gap: 4px;
   position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-}
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background: #fafafa;
+  box-sizing: border-box;
 
-.message-input {
-  padding: 12px 8px;
-  flex: 1;
-  background: $messageBackground;
-  border-radius: 18px;
-}
+  .message-input {
+    padding: 12px 8px;
+    flex: 1;
+    background: $messageBackground;
+    border-radius: 18px;
+  }
 
-.send-message {
-  padding: 12px 14px;
-  cursor: pointer;
+  .send-message {
+    padding: 12px 14px;
+    cursor: pointer;
+  }
 }

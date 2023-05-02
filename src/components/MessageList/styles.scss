@@ -1,8 +1,9 @@
 .message-list-container {
   margin-bottom: 16px;
   flex: 1;
-  max-height: 70vh;
-  overflow: scroll;
+  padding-top: 70px;
+  max-height: calc(100vh - 70px - 90px);
+  overflow: auto;
 }
 
 .message-list {
