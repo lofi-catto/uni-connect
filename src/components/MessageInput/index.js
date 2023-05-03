@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { debounce } from 'lodash';
 import localForage from 'localforage';
 import {
   getChatRoomRef,
@@ -67,6 +68,9 @@ function MessageInput({ chatRoomId }) {
     setNewMessageText('');
   };
 
+  const debouncedHandleKeyDown = debounce(handleKeyDown, 2000);
+  const debouncedHandleKeyUp = debounce(handleKeyUp, 5000);
+
   return (
     <form onSubmit={handleNewMessageSubmit} className="message-input-container">
       <input
@@ -75,8 +79,8 @@ function MessageInput({ chatRoomId }) {
         className="message-input"
         value={newMessageText}
         onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        onKeyUp={handleKeyUp}
+        onKeyDown={debouncedHandleKeyDown}
+        onKeyUp={debouncedHandleKeyUp}
         required
         minLength={1}
       />

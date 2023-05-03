@@ -1,7 +1,10 @@
 import { useMessages } from 'hooks/useMessages';
+import { useTypingUsers } from 'hooks/useTypingUsers';
 
 function MessageList({ chatRoomId, userId }) {
   const messages = useMessages(chatRoomId);
+  // remove current user
+  const typingUsers = useTypingUsers(chatRoomId, userId);
   let lastSenderId = '';
 
   return (
@@ -31,6 +34,12 @@ function MessageList({ chatRoomId, userId }) {
           );
         })}
       </ul>
+      {typingUsers.length > 0 && (
+        <div>
+          {typingUsers.map((user) => user.displayName).join(', ')}{' '}
+          {typingUsers.length === 1 ? 'is' : 'are'} typing...
+        </div>
+      )}
     </div>
   );
 }

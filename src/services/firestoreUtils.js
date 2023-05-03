@@ -260,3 +260,24 @@ export async function removeUserFromTypingUsers(userId, chatRoomId) {
     throw error;
   }
 }
+
+export function getTypingUsersByChatRoomId(chatRoomId, callback) {
+  const chatRoomRef = doc(db, 'chatRooms', chatRoomId);
+
+  return onSnapshot(chatRoomRef, async (doc) => {
+    if (doc.exists()) {
+      const data = doc.data();
+      const typingUserIds = data.typingUsers || [];
+
+      // Fetch user data for each typing user
+      const typingUsers = await Promise.all(
+        typingUserIds.map(async (userId) => {
+          const user = await getUserById(userId);
+          return user ? { id: user.id, ...user } : null;
+        })
+      );
+
+      callback(typingUsers.filter((user) => user !== null));
+    }
+  });
+}
