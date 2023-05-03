@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import localForage from 'localforage';
 import { createChatRoom, addUser, deleteUser } from 'services/firestoreUtils';
-import { ReactComponent as ReactLogo } from 'assets/SVG/monash-logo-mono.svg';
 
 function CreateRoomForm() {
   const navigate = useNavigate();
@@ -20,7 +19,7 @@ function CreateRoomForm() {
     }
 
     if (!chatRoomName) {
-      setErrorMessage('Chat room code is required');
+      setErrorMessage('Chat room name is required');
       return;
     }
 

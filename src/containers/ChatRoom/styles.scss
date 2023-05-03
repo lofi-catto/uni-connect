@@ -20,5 +20,18 @@
     left: 0;
     right: 0;
     padding: 20px;
+
+    .room-info {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        color: $textColor;
+      }
+      span {
+        font-weight: 700;
+        color: $primaryDark2Color;
+      }
+    }
   }
 }

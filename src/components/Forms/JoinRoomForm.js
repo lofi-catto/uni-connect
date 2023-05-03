@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import localForage from 'localforage';
 import {
+  isUserDisplayNameExists,
   checkChatRoomExists,
   addUser,
   getChatRoomId,
@@ -24,7 +25,7 @@ function JoinRoomForm() {
     }
 
     if (!chatRoomCode) {
-      setErrorMessage('Chat room name is required');
+      setErrorMessage('Chat room code is required');
       return;
     }
 
@@ -37,8 +38,13 @@ function JoinRoomForm() {
         return;
       }
 
-      // Add the user to Firestore
-      const userId = await addUser(userName);
+      // will receive null if User Display Name Not Exists
+      let userId = await isUserDisplayNameExists(userName);
+
+      // Add the user to Firestore if not exist
+      if (!userId) {
+        userId = await addUser(userName);
+      }
 
       //save userId to localForage
       try {

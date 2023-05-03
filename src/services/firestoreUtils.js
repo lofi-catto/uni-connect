@@ -23,8 +23,26 @@ const db = getFirestore(firebaseConfig);
 /* USERS */
 export async function addUser(displayName) {
   try {
+    const usersRef = collection(db, 'users');
+    let newDisplayName = displayName;
+    let suffix = 1;
+
+    // Check if the displayName already exists in the database
+    let querySnapshot = await getDocs(
+      query(usersRef, where('displayName', '==', newDisplayName))
+    );
+
+    while (!querySnapshot.empty) {
+      // If the displayName already exists, append a unique suffix to it
+      suffix++;
+      newDisplayName = `${displayName}-${suffix}`;
+      querySnapshot = await getDocs(
+        query(usersRef, where('displayName', '==', newDisplayName))
+      );
+    }
+
     // Add a new document with an automatically generated ID to the users collection
-    const docRef = await addDoc(collection(db, 'users'), { displayName });
+    const docRef = await addDoc(usersRef, { displayName: newDisplayName });
 
     return docRef.id;
   } catch (error) {
@@ -35,6 +53,42 @@ export async function addUser(displayName) {
 
 export function getUserRef(userId) {
   return doc(db, 'users', userId);
+}
+
+export async function getUserById(userId) {
+  try {
+    const usersRef = collection(db, 'users');
+    const userDoc = await getDoc(doc(usersRef, userId));
+
+    if (userDoc.exists()) {
+      return { id: userDoc.id, ...userDoc.data() };
+    } else {
+      console.error('No user found with ID:', userId);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error getting user:', error);
+    throw error;
+  }
+}
+
+export async function isUserDisplayNameExists(displayName) {
+  try {
+    const usersRef = collection(db, 'users');
+    const querySnapshot = await getDocs(
+      query(usersRef, where('displayName', '==', displayName))
+    );
+
+    if (!querySnapshot.empty) {
+      // If a user with the provided displayName exists, return the ID of the first document in the query snapshot
+      return querySnapshot.docs[0].id;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('Error checking if display name exists:', error);
+    throw error;
+  }
 }
 
 export async function deleteUser(userId) {
@@ -99,7 +153,7 @@ export async function getChatRoomId(chatRoomCode) {
   try {
     const q = query(
       collection(db, 'chatRooms'),
-      where('roomCode', '==', chatRoomCode)
+      where('roomCode', '==', chatRoomCode.toUpperCase())
     );
     const querySnapshot = await getDocs(q);
     const chatRoomId = querySnapshot.docs[0].id;
