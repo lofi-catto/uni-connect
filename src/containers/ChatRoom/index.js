@@ -6,6 +6,7 @@ import { getChatRoomById } from 'services/firestoreUtils';
 
 import MessageList from 'components/MessageList';
 import MessageInput from 'components/MessageInput';
+import { LinkButton } from 'components/Button';
 
 function ChatRoom() {
   const navigate = useNavigate();
@@ -48,8 +49,8 @@ function ChatRoom() {
   return (
     <div className="chat-room-container">
       <div className="chat-room-title">
-        <Link to="/">Back to lobby</Link>
-        <h2>Room Code: {chatRoom?.name}</h2>
+        <LinkButton href={'/'} linkText={'Back to lobby'} />
+        <h2>Room Code: {chatRoom?.roomCode}</h2>
       </div>
       <MessageList chatRoomId={chatRoomId} userId={userId} />
       <MessageInput chatRoomId={chatRoomId} />

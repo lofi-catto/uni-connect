@@ -6,13 +6,12 @@ import {
   addUser,
   getChatRoomId,
 } from 'services/firestoreUtils';
-import { ReactComponent as ReactLogo } from 'assets/SVG/monash-logo-mono.svg';
 
 function JoinRoomForm() {
   const navigate = useNavigate();
 
   const [userName, setUserName] = useState('');
-  const [chatRoomName, setChatRoomName] = useState('');
+  const [chatRoomCode, setChatRoomCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   // Add a new user to Firestore and join the chat room
@@ -24,14 +23,14 @@ function JoinRoomForm() {
       return;
     }
 
-    if (!chatRoomName) {
+    if (!chatRoomCode) {
       setErrorMessage('Chat room name is required');
       return;
     }
 
     try {
       // Check if chat room exists
-      const chatRoomExists = await checkChatRoomExists(chatRoomName);
+      const chatRoomExists = await checkChatRoomExists(chatRoomCode);
 
       if (!chatRoomExists) {
         setErrorMessage('Chat room does not exist');
@@ -49,7 +48,7 @@ function JoinRoomForm() {
       }
 
       // Get the chat room ID
-      const chatRoomId = await getChatRoomId(chatRoomName);
+      const chatRoomId = await getChatRoomId(chatRoomCode);
 
       // Navigate to chat room
       navigate(`/chat/${chatRoomId}`);
@@ -66,7 +65,7 @@ function JoinRoomForm() {
 
   const handleRoomNameChange = (e) => {
     e.preventDefault();
-    setChatRoomName(e.target.value.trim());
+    setChatRoomCode(e.target.value.trim());
     setErrorMessage('');
   };
 
@@ -85,7 +84,7 @@ function JoinRoomForm() {
       <input
         placeholder="Enter Chat Room Code"
         type="text"
-        value={chatRoomName}
+        value={chatRoomCode}
         required
         onChange={handleRoomNameChange}
       />

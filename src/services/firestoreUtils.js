@@ -95,11 +95,11 @@ export async function createMessage(text, senderRef, chatRoomRef) {
 
 /* CHAT ROOM */
 
-export async function getChatRoomId(chatRoomName) {
+export async function getChatRoomId(chatRoomCode) {
   try {
     const q = query(
       collection(db, 'chatRooms'),
-      where('name', '==', chatRoomName.toLowerCase())
+      where('roomCode', '==', chatRoomCode)
     );
     const querySnapshot = await getDocs(q);
     const chatRoomId = querySnapshot.docs[0].id;
@@ -124,12 +124,12 @@ export async function getChatRoomById(chatRoomId) {
   }
 }
 
-export async function checkChatRoomExists(roomName) {
+export async function checkChatRoomExists(roomCode) {
   // Query the chatRooms collection for a document with the matching name
   return getDocs(
     query(
       collection(db, 'chatRooms'),
-      where('name', '==', roomName.toLowerCase())
+      where('roomCode', '==', roomCode.toUpperCase())
     )
   )
     .then((querySnapshot) => {
@@ -142,11 +142,37 @@ export async function checkChatRoomExists(roomName) {
     });
 }
 
-export async function createChatRoom(name) {
+export async function createChatRoom(name, count = 0) {
   const chatRoomsRef = collection(db, 'chatRooms');
 
-  // Create a new chat room document
-  const newChatRoomRef = await addDoc(chatRoomsRef, { name });
+  // Generate a random 4-character string
+  const randomString = Math.random().toString(36).substr(2, 4).toUpperCase();
+
+  // Extract the first four characters of the name string
+  const nameString = name.substring(0, 4).toUpperCase();
+
+  // Combine the two strings to form the room code
+  const roomCode = nameString + randomString;
+
+  // Check if the generated room code already exists
+  const querySnapshot = await getDocs(
+    query(chatRoomsRef, where('roomCode', '==', roomCode))
+  );
+
+  if (!querySnapshot.empty) {
+    // If the room code already exists, generate a new one recursively
+    if (count >= 10) {
+      // Limit the number of recursive calls to 10
+      throw new Error('Unable to generate a unique room code');
+    }
+    return createChatRoom(name, count + 1);
+  }
+
+  // Create a new chat room document with the unique room code
+  const newChatRoomRef = await addDoc(chatRoomsRef, {
+    name,
+    roomCode,
+  });
 
   return newChatRoomRef.id;
 }

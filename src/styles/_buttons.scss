@@ -1,4 +1,5 @@
-.text-button {
+.text-button,
+.link-button {
   width: fit-content;
   background-color: transparent;
   text-decoration-line: underline;
@@ -18,5 +19,13 @@
     text-decoration-color: #fafafa;
     transition: 200ms;
     text-underline-offset: 0.1em;
+  }
+}
+
+.link-button {
+  color: $primaryDark1Color;
+  &:hover {
+    cursor: pointer;
+    text-decoration-color: $primaryDark1Color;
   }
 }

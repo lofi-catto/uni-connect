@@ -88,7 +88,7 @@ function CreateRoomForm() {
         onChange={handleRoomNameChange}
       />
       <br />
-      <button className="form-action" type="button" onClick={createRoom}>
+      <button className="form-action create" type="button" onClick={createRoom}>
         Create New Room
       </button>
       <br />
