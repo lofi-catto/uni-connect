@@ -145,13 +145,6 @@ export async function checkChatRoomExists(roomName) {
 export async function createChatRoom(name) {
   const chatRoomsRef = collection(db, 'chatRooms');
 
-  const chatRoomExists = await checkChatRoomExists(name.toLowerCase());
-  if (chatRoomExists) {
-    return new Error(
-      'Chat room with this name already exists, please use the join button'
-    );
-  }
-
   // Create a new chat room document
   const newChatRoomRef = await addDoc(chatRoomsRef, { name });
 
