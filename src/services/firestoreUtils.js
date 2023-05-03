@@ -7,11 +7,14 @@ import {
   getDocs,
   doc,
   getDoc,
+  updateDoc,
   deleteDoc,
   serverTimestamp,
   collectionGroup,
   onSnapshot,
   orderBy,
+  arrayUnion,
+  arrayRemove,
 } from 'firebase/firestore';
 import firebaseConfig from 'services/firebaseConfig';
 
@@ -226,7 +229,34 @@ export async function createChatRoom(name, count = 0) {
   const newChatRoomRef = await addDoc(chatRoomsRef, {
     name,
     roomCode,
+    typingUsers: [],
   });
 
   return newChatRoomRef.id;
+}
+
+export async function addTypingUserToChatRoom(userId, chatRoomId) {
+  try {
+    const chatRoomRef = getChatRoomRef(chatRoomId);
+
+    await updateDoc(chatRoomRef, {
+      typingUsers: arrayUnion(userId),
+    });
+  } catch (error) {
+    console.error('Error adding user to typingUsers:', error);
+    throw error;
+  }
+}
+
+export async function removeUserFromTypingUsers(userId, chatRoomId) {
+  try {
+    const chatRoomRef = getChatRoomRef(chatRoomId);
+
+    await updateDoc(chatRoomRef, {
+      typingUsers: arrayRemove(userId),
+    });
+  } catch (error) {
+    console.error('Error removing user from typingUsers:', error);
+    throw error;
+  }
 }
