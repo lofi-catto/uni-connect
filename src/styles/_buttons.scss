@@ -1,0 +1,31 @@
+.text-button,
+.link-button {
+  width: fit-content;
+  background-color: transparent;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.1em;
+  transition: 500ms;
+  font-weight: 600;
+  color: $white;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration-line: underline;
+    text-decoration-thickness: 3px;
+    text-decoration-color: #fafafa;
+    transition: 200ms;
+    text-underline-offset: 0.1em;
+  }
+}
+
+.link-button {
+  color: $primaryDark1Color;
+  &:hover {
+    cursor: pointer;
+    text-decoration-color: $primaryDark1Color;
+  }
+}

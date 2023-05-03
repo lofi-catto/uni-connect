@@ -1,0 +1,13 @@
+.login-form {
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px;
+  width: 350px;
+
+  @include customMaxBreakPoint(500) {
+    max-width: 300px;
+  }
+}

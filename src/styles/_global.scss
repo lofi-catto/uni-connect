@@ -1,10 +1,14 @@
 @import 'variables.scss';
 @import 'mixins.scss';
+@import 'typography.scss';
+@import 'buttons.scss';
 
 @import 'components/MessageList/styles.scss';
 @import 'components/MessageInput/styles.scss';
-@import 'components/ChatRoom/styles.scss';
-@import 'components/Lobby/styles.scss';
+@import 'components/Forms/styles.scss';
+
+@import 'containers/ChatRoom/styles.scss';
+@import 'containers/Lobby/styles.scss';
 
 html,
 body {

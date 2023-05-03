@@ -1,16 +1,49 @@
 import React, { useState } from 'react';
+import { debounce } from 'lodash';
 import localForage from 'localforage';
 import {
   getChatRoomRef,
   getUserRef,
   createMessage,
+  addTypingUserToChatRoom,
+  removeUserFromTypingUsers,
 } from 'services/firestoreUtils';
 
 function MessageInput({ chatRoomId }) {
   const [newMessageText, setNewMessageText] = useState('');
 
-  const handleChange = (event) => {
+  const handleChange = async (event) => {
     setNewMessageText(event.target.value);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key !== 'Enter' && event.key !== 'Escape') {
+      handleTypingStart();
+    }
+  };
+
+  const handleKeyUp = (event) => {
+    if (event.key !== 'Enter' && event.key !== 'Escape') {
+      handleTypingStop();
+    }
+  };
+
+  const handleTypingStart = async () => {
+    const userId = await localForage.getItem('userId');
+    if (!userId) {
+      return;
+    }
+
+    // Add the user to the typingUsers array
+    addTypingUserToChatRoom(userId, chatRoomId);
+  };
+
+  const handleTypingStop = async () => {
+    const userId = await localForage.getItem('userId');
+    if (!userId) {
+      return;
+    }
+    removeUserFromTypingUsers(userId, chatRoomId);
   };
 
   const handleNewMessageSubmit = async (event) => {
@@ -19,7 +52,7 @@ function MessageInput({ chatRoomId }) {
     // Get a reference to the chat room
     const chatRoomRef = getChatRoomRef(chatRoomId);
 
-    // get current user id from localforage
+    // Get the current user ID from localforage
     const userId = await localForage.getItem('userId');
 
     if (!userId) {
@@ -35,6 +68,9 @@ function MessageInput({ chatRoomId }) {
     setNewMessageText('');
   };
 
+  const debouncedHandleKeyDown = debounce(handleKeyDown, 2000);
+  const debouncedHandleKeyUp = debounce(handleKeyUp, 5000);
+
   return (
     <form onSubmit={handleNewMessageSubmit} className="message-input-container">
       <input
@@ -43,6 +79,8 @@ function MessageInput({ chatRoomId }) {
         className="message-input"
         value={newMessageText}
         onChange={handleChange}
+        onKeyDown={debouncedHandleKeyDown}
+        onKeyUp={debouncedHandleKeyUp}
         required
         minLength={1}
       />

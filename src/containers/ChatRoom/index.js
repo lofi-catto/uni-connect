@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import localForage from 'localforage';
 
-import { getChatRoomById } from 'services/firestoreUtils';
+import { getChatRoomById, getUserById } from 'services/firestoreUtils';
 
 import MessageList from 'components/MessageList';
 import MessageInput from 'components/MessageInput';
+import { LinkButton } from 'components/Button';
 
 function ChatRoom() {
   const navigate = useNavigate();
   const { chatRoomId } = useParams();
-  const [userId, setUserId] = useState(false);
+  const [user, setUser] = useState(false);
   const [chatRoom, setChatRoom] = useState();
 
   useEffect(() => {
     // get current user id from localforage
     const fetchUserId = async () => {
       const userId = await localForage.getItem('userId');
-      setUserId(userId);
+      if (userId) {
+        const user = await getUserById(userId);
+        setUser(user);
+      }
     };
 
     const fetchChatRoom = async () => {
@@ -30,7 +34,7 @@ function ChatRoom() {
     fetchChatRoom();
   }, [chatRoomId]);
 
-  if (!userId || !chatRoomId) {
+  if (!user || !chatRoomId) {
     return (
       <div>
         <h2>Please go back and choose a name</h2>
@@ -48,12 +52,17 @@ function ChatRoom() {
   return (
     <div className="chat-room-container">
       <div className="chat-room-title">
-        <Link to="/">Back to lobby</Link>
-        <h2>Room Code: {chatRoom?.name}</h2>
+        <LinkButton href={'/'} linkText={'Back to lobby'} />
+        <div className="room-info">
+          <span>
+            <label>Room Code:</label> {chatRoom?.roomCode}
+          </span>
+          <span>
+            <label>Username:</label> {user?.displayName}
+          </span>
+        </div>
       </div>
-      <ul>
-        <MessageList chatRoomId={chatRoomId} userId={userId} />
-      </ul>
+      <MessageList chatRoomId={chatRoomId} userId={user.id} />
       <MessageInput chatRoomId={chatRoomId} />
     </div>
   );
