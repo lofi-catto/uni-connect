@@ -1,0 +1,25 @@
+.chat-room-title {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  border: 1px solid $primaryColor;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  background: $primaryColor;
+  padding: 20px;
+  height: 70px;
+
+  .back-btn {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+    color: $white;
+  }
+}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BsSend } from 'react-icons/bs';
 import { debounce } from 'lodash';
 import localForage from 'localforage';
 import {
@@ -101,7 +102,7 @@ function MessageInput({ chatRoomId }) {
         minLength={1}
       />
       <button type="submit" disabled={!newMessageText} className="send-message">
-        Send
+        Send <BsSend />
       </button>
     </form>
   );

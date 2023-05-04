@@ -69,7 +69,7 @@ function CreateRoomForm() {
   };
 
   return (
-    <form id="create-room-form" className="lobby-form" onSubmit={() => false}>
+    <form id="create-room-form" className="lobby-form" onSubmit={createRoom}>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <br />
       <input
@@ -88,7 +88,7 @@ function CreateRoomForm() {
         onChange={handleRoomNameChange}
       />
       <br />
-      <button className="form-action create" type="button" onClick={createRoom}>
+      <button className="form-action create" type="submit" onClick={createRoom}>
         Create New Room
       </button>
       <br />

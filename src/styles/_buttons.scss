@@ -1,5 +1,4 @@
-.text-button,
-.link-button {
+.text-button {
   width: fit-content;
   background-color: transparent;
   text-decoration-line: underline;
@@ -23,9 +22,10 @@
 }
 
 .link-button {
-  color: $primaryDark1Color;
+  font-weight: 600;
+  color: $white;
+  text-decoration: none;
   &:hover {
     cursor: pointer;
-    text-decoration-color: $primaryDark1Color;
   }
 }

@@ -72,7 +72,11 @@ function JoinRoomForm() {
   };
 
   return (
-    <form id="join-room-form" className="lobby-form" onSubmit={() => false}>
+    <form
+      id="join-room-form"
+      className="lobby-form"
+      onSubmit={addUserAndJoinChatRoom}
+    >
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <br />
       <input
@@ -93,7 +97,7 @@ function JoinRoomForm() {
       <br />
       <button
         className="form-action"
-        type="button"
+        type="submit"
         onClick={addUserAndJoinChatRoom}
       >
         Join Chat Room
