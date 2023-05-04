@@ -1,12 +1,12 @@
 .message-list-container {
-  margin-bottom: 16px;
-  flex: 1;
-  padding: 70px 20px 0 20px;
-  max-height: calc(100vh - 70px - 90px);
+  padding: 40px 20px;
   overflow: auto;
+  box-sizing: border-box;
+  height: calc(100vh - 70px - 85px);
 }
 
 .message-list {
+  margin: 0;
   list-style: none;
   height: 100%;
   display: flex;
@@ -15,20 +15,43 @@
 }
 
 .message {
+  margin-left: 40px;
   padding: 8px 16px;
   margin-bottom: 8px;
-  background: $messageBackground;
+  position: relative;
+  border: 1px solid $primaryColor;
+  font-weight: 500;
+  color: $primaryColor;
   border-radius: 18px;
   text-align: left;
   max-width: 50%;
-}
 
-.own {
-  background: $ownMessageBackground;
-  align-self: flex-end;
-  text-align: right;
-}
+  .sender {
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    font-size: 10px;
+    border-radius: 50%;
+    padding: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $white;
+    left: -40px;
+    top: -30px;
+    background-color: $primaryColor;
+  }
 
-.sender {
-  margin: 8px 0;
+  &.own {
+    background-color: $primaryColor;
+    align-self: flex-end;
+    text-align: right;
+    color: $textLight2Color;
+
+    .sender {
+      background-color: transparent;
+      border: 1px solid $primaryColor;
+      color: $primaryColor;
+    }
+  }
 }

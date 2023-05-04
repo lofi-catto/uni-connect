@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getTypingUsersByChatRoomId } from 'services/firestoreUtils';
+import { getTypingUsersByChatRoomId } from 'services/chatRoom';
 
 export function useTypingUsers(chatRoomId, userId) {
   const [typingUsers, setTypingUsers] = useState([]);

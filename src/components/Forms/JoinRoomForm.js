@@ -1,12 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import localForage from 'localforage';
-import {
-  isUserDisplayNameExists,
-  checkChatRoomExists,
-  addUser,
-  getChatRoomId,
-} from 'services/firestoreUtils';
+import { checkChatRoomExists, getChatRoomId } from 'services/chatRoom';
+import { addUser, isUserDisplayNameExists } from 'services/user';
 
 function JoinRoomForm() {
   const navigate = useNavigate();
@@ -76,7 +72,11 @@ function JoinRoomForm() {
   };
 
   return (
-    <form className="login-form" onSubmit={() => false}>
+    <form
+      id="join-room-form"
+      className="lobby-form"
+      onSubmit={addUserAndJoinChatRoom}
+    >
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <br />
       <input
@@ -97,7 +97,7 @@ function JoinRoomForm() {
       <br />
       <button
         className="form-action"
-        type="button"
+        type="submit"
         onClick={addUserAndJoinChatRoom}
       >
         Join Chat Room

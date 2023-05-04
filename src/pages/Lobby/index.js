@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { JoinRoomForm, CreateRoomForm } from 'components/Forms';
 import { TextButton } from 'components/Button';
 import { ReactComponent as ReactLogo } from 'assets/SVG/monash-logo-mono.svg';

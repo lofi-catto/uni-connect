@@ -1,0 +1,12 @@
+.chat-room-container {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  min-height: 100vh;
+
+  .main-wrapper {
+    border-right: 1px solid $primaryColor;
+    flex: 3;
+  }
+}

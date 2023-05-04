@@ -33,7 +33,8 @@
     margin: 0px;
     border: 0px;
     cursor: pointer;
-    background: $textColor;
+    background: $primaryColor;
+    border: 1px solid $primaryColor;
     color: $white;
     border-radius: 4px;
     font-size: 16px;
@@ -41,18 +42,20 @@
     text-align: center;
     min-width: 48px;
     min-height: 48px;
-    padding: 0px 16px 4px;
 
     &.create {
-      background: $primaryDark2Color;
+      background: $textColor;
+      border: 1px solid $textColor;
 
       &:hover {
-        background-color: $primaryLight2Color;
+        color: $textColor;
+        background-color: $secondaryColor;
       }
     }
 
     &:hover {
-      background-color: $textLightColor;
+      color: $primaryColor;
+      background-color: $secondaryColor;
     }
   }
 }

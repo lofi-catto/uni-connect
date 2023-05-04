@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+import { BsSend } from 'react-icons/bs';
 import { debounce } from 'lodash';
 import localForage from 'localforage';
 import {
   getChatRoomRef,
-  getUserRef,
-  createMessage,
   addTypingUserToChatRoom,
   removeUserFromTypingUsers,
-} from 'services/firestoreUtils';
+} from 'services/chatRoom';
+import { createMessage } from 'services/message';
+import { getUserRef } from 'services/user';
 
 function MessageInput({ chatRoomId }) {
   const [newMessageText, setNewMessageText] = useState('');
@@ -46,6 +47,19 @@ function MessageInput({ chatRoomId }) {
     removeUserFromTypingUsers(userId, chatRoomId);
   };
 
+  // scroll to the latest message on submit
+  const scrollMessageListToBottom = () => {
+    const messageListContainer = document.getElementsByClassName(
+      'message-list-container'
+    )[0];
+    if (messageListContainer) {
+      messageListContainer.scroll({
+        top: messageListContainer.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   const handleNewMessageSubmit = async (event) => {
     event.preventDefault();
 
@@ -66,6 +80,9 @@ function MessageInput({ chatRoomId }) {
 
     // Clear the message input
     setNewMessageText('');
+
+    //scroll to bottom
+    scrollMessageListToBottom();
   };
 
   const debouncedHandleKeyDown = debounce(handleKeyDown, 2000);
@@ -85,7 +102,7 @@ function MessageInput({ chatRoomId }) {
         minLength={1}
       />
       <button type="submit" disabled={!newMessageText} className="send-message">
-        Send
+        Send <BsSend />
       </button>
     </form>
   );

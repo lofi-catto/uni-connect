@@ -6,9 +6,10 @@
 @import 'components/MessageList/styles.scss';
 @import 'components/MessageInput/styles.scss';
 @import 'components/Forms/styles.scss';
+@import 'components/ChatRoom/styles.scss';
 
-@import 'containers/ChatRoom/styles.scss';
-@import 'containers/Lobby/styles.scss';
+@import 'pages/ChatRoom/styles.scss';
+@import 'pages/Lobby/styles.scss';
 
 html,
 body {
@@ -42,6 +43,37 @@ textarea {
   padding: 10px;
   margin: 5px 0;
   text-align: center;
-  border: 1px solid $warningColor;
   color: $warningColor;
+}
+
+.error-gate {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: $secondaryColor;
+
+  .error-message {
+    color: red;
+  }
+
+  .link-button {
+    font-size: 20px;
+    color: $primaryColor;
+    text-decoration: underline;
+  }
+}
+
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: $secondaryColor;
 }

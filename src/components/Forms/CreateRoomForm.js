@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import localForage from 'localforage';
-import { createChatRoom, addUser, deleteUser } from 'services/firestoreUtils';
+import { createChatRoom } from 'services/chatRoom';
+import { addUser, deleteUser } from 'services/user';
 
 function CreateRoomForm() {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ function CreateRoomForm() {
   };
 
   return (
-    <form className="login-form" onSubmit={() => false}>
+    <form id="create-room-form" className="lobby-form" onSubmit={createRoom}>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <br />
       <input
@@ -87,7 +88,7 @@ function CreateRoomForm() {
         onChange={handleRoomNameChange}
       />
       <br />
-      <button className="form-action create" type="button" onClick={createRoom}>
+      <button className="form-action create" type="submit" onClick={createRoom}>
         Create New Room
       </button>
       <br />
