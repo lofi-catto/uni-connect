@@ -3,11 +3,11 @@ import { debounce } from 'lodash';
 import localForage from 'localforage';
 import {
   getChatRoomRef,
-  getUserRef,
-  createMessage,
   addTypingUserToChatRoom,
   removeUserFromTypingUsers,
-} from 'services/firestoreUtils';
+} from 'services/chatRoom';
+import { createMessage } from 'services/message';
+import { getUserRef } from 'services/user';
 
 function MessageInput({ chatRoomId }) {
   const [newMessageText, setNewMessageText] = useState('');

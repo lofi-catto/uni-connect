@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import localForage from 'localforage';
-import { createChatRoom, addUser, deleteUser } from 'services/firestoreUtils';
+import { createChatRoom } from 'services/chatRoom';
+import { addUser, deleteUser } from 'services/user';
 
 function CreateRoomForm() {
   const navigate = useNavigate();

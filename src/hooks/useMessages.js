@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
-import {
-  getMessagesByChatRoomRef,
-  getChatRoomRef,
-} from 'services/firestoreUtils';
+import { getMessagesByChatRoomRef } from 'services/message';
+import { getChatRoomRef } from 'services/chatRoom';
 
 export function useMessages(chatRoomId) {
   const [messages, setMessages] = useState([]);

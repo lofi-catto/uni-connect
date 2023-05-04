@@ -1,12 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import localForage from 'localforage';
-import {
-  isUserDisplayNameExists,
-  checkChatRoomExists,
-  addUser,
-  getChatRoomId,
-} from 'services/firestoreUtils';
+import { checkChatRoomExists, getChatRoomId } from 'services/chatRoom';
+import { addUser, isUserDisplayNameExists } from 'services/user';
 
 function JoinRoomForm() {
   const navigate = useNavigate();

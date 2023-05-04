@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import localForage from 'localforage';
 
-import { getChatRoomById, getUserById } from 'services/firestoreUtils';
+import { getChatRoomById } from 'services/chatRoom';
+import { getUserById } from 'services/user';
 
 import MessageList from 'components/MessageList';
 import MessageInput from 'components/MessageInput';
