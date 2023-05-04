@@ -66,7 +66,7 @@ function ChatRoom() {
         <MessageList chatRoomId={chatRoomId} userId={user.id} />
         <MessageInput chatRoomId={chatRoomId} />
       </div>
-      <SideBar chatRoom={chatRoom} />
+      <SideBar chatRoom={chatRoom} chatRoomId={chatRoomId} />
     </div>
   );
 }

@@ -59,5 +59,21 @@
         }
       }
     }
+
+    .search-result-container {
+      max-height: 70vh;
+      overflow: auto;
+
+      .search-result-list {
+        li {
+          padding: 0 10px;
+          .sender {
+            padding: 10px 0;
+            font-weight: 600;
+            color: $primaryColor;
+          }
+        }
+      }
+    }
   }
 }
