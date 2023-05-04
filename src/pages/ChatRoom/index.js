@@ -15,7 +15,8 @@ function ChatRoom() {
   const { chatRoomId } = useParams();
   const [user, setUser] = useState(false);
   const [chatRoom, setChatRoom] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
+  const [isLoadingChatRoom, setIsLoadingChatRoom] = useState(true);
 
   useEffect(() => {
     // get current user id from localforage
@@ -25,26 +26,22 @@ function ChatRoom() {
         const user = await getUserById(userId);
         setUser(user);
       }
+      setIsLoadingUser(false);
     };
 
     const fetchChatRoom = async () => {
       // Get a reference to the chat room
       const chatRoom = await getChatRoomById(chatRoomId);
       setChatRoom(chatRoom);
+      setIsLoadingChatRoom(false);
     };
 
     fetchUserId();
     fetchChatRoom();
   }, [chatRoomId]);
 
-  useEffect(() => {
-    if (user) {
-      setIsLoading(false);
-    }
-  }, [user]);
-
   // TO DO: Improve this loading please
-  if (isLoading) {
+  if (isLoadingUser || isLoadingChatRoom) {
     return <div className="loading-screen">Loading...</div>;
   }
 
