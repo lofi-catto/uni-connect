@@ -10,6 +10,28 @@
 - Search feature (partially)
 - CI/CD using Vercel
 
+# FIRESTORE SCHEMA
+
+- chatRooms
+
+  - chatRoomId: string
+  - name: string
+  - roomCode: string
+  - typingUsers: userId[]
+
+- messages
+
+  - messageId: string
+  - chatRoom: Reference
+  - sender: Reference
+  - text: string
+  - timestamp: timestamp
+  - words: string[]
+
+- users
+  - userId: string
+  - displayName: string
+
 # KNOW ISSUES - REVIST IN FUTURE VERSIONS
 
 1. There is no login, login will make things more secured and users can resume their sessions.
@@ -18,3 +40,4 @@
 4. More tests needed
 5. Sass needs some tidying (could switch to css modules or styled components)
 6. Search is not working well, firebase doesn't support text search, array storing is just a trick
+7. Responsive for side bar could be better
