@@ -1,7 +1,7 @@
 import { LinkButton } from 'components/Button';
 import { BiChevronLeft } from 'react-icons/bi';
 
-function RoomTitle({ user }) {
+function RoomTitle({ chatRoom, user }) {
   return (
     <div className="chat-room-title">
       <LinkButton
@@ -16,6 +16,9 @@ function RoomTitle({ user }) {
       <div className="user-info">
         <span>
           <label>Username:</label> {user?.displayName}
+        </span>
+        <span className="room-code">
+          <label>Room Code:</label> {chatRoom?.roomCode}
         </span>
       </div>
     </div>

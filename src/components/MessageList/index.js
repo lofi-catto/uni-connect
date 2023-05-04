@@ -30,11 +30,13 @@ function MessageList({ chatRoomId, userId }) {
           }
           // grouping consecutive messages in to one user
           let displayName = '';
+          let margin = 8;
           if (lastSenderId !== x.sender.id || !lastSenderId) {
             if (isOwnMessage) {
               displayName = 'You';
             } else {
               displayName = x.sender.displayName.substring(0, 4);
+              margin = 20;
             }
           }
           lastSenderId = x.sender.id;
@@ -45,6 +47,7 @@ function MessageList({ chatRoomId, userId }) {
               message={x}
               isOwnMessage={isOwnMessage}
               displayName={displayName}
+              margin={margin}
               senderClassName={senderClassName}
               senderColor={senderColorMap[x.sender.id]}
             />
@@ -65,11 +68,15 @@ function Message({
   message,
   isOwnMessage,
   displayName,
+  margin,
   senderClassName,
   senderColor,
 }) {
   return (
-    <li className={['message', senderClassName].join(' ')}>
+    <li
+      style={{ marginBottom: margin, marginTop: margin }}
+      className={['message', senderClassName].join(' ')}
+    >
       {displayName && (
         <span className="sender" style={{ background: senderColor }}>
           {displayName}
