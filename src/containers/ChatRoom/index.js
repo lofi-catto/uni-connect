@@ -7,7 +7,7 @@ import { getUserById } from 'services/user';
 
 import MessageList from 'components/MessageList';
 import MessageInput from 'components/MessageInput';
-import { LinkButton } from 'components/Button';
+import RoomTitle from 'components/ChatRoom/RoomTitle';
 
 function ChatRoom() {
   const navigate = useNavigate();
@@ -52,17 +52,7 @@ function ChatRoom() {
 
   return (
     <div className="chat-room-container">
-      <div className="chat-room-title">
-        <LinkButton href={'/'} linkText={'Back to lobby'} />
-        <div className="room-info">
-          <span>
-            <label>Room Code:</label> {chatRoom?.roomCode}
-          </span>
-          <span>
-            <label>Username:</label> {user?.displayName}
-          </span>
-        </div>
-      </div>
+      <RoomTitle chatRoom={chatRoom} user={user} />
       <MessageList chatRoomId={chatRoomId} userId={user.id} />
       <MessageInput chatRoomId={chatRoomId} />
     </div>
