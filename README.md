@@ -1,8 +1,8 @@
 # ENV
-Production: https://uni-connect-zeta.vercel.app/
-Staging: https://staging-uni-connect-zeta.vercel.app/
-Run locally: npm start
-Run test: npm test
+- Production: https://uni-connect-zeta.vercel.app/
+- Staging: https://staging-uni-connect-zeta.vercel.app/
+- Run locally: npm start
+- Run test: npm test
 
 # FEATURES DONE
 
