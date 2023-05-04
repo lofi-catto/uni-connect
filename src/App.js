@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import ChatRoom from 'containers/ChatRoom';
-import Lobby from 'containers/Lobby';
+import ChatRoom from 'pages/ChatRoom';
+import Lobby from 'pages/Lobby';
 
 function App() {
   return (

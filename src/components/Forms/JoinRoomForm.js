@@ -72,7 +72,7 @@ function JoinRoomForm() {
   };
 
   return (
-    <form className="login-form" onSubmit={() => false}>
+    <form id="join-room-form" className="lobby-form" onSubmit={() => false}>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <br />
       <input

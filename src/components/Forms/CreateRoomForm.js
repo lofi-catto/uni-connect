@@ -69,7 +69,7 @@ function CreateRoomForm() {
   };
 
   return (
-    <form className="login-form" onSubmit={() => false}>
+    <form id="create-room-form" className="lobby-form" onSubmit={() => false}>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <br />
       <input
