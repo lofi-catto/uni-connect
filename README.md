@@ -5,6 +5,7 @@
 - Create new rooms
 - Handle multiple user with the same name
 - Group consecutive messages
+- Is typing feature
 - Current chat room works on reload
 - CI/CD using Vercel
 
@@ -13,3 +14,5 @@
 1. There is no login, login will make things more secured and users can resume their sessions.
 2. Should allow user to change their auto generated names
 3. Same case for chat room code
+4. More tests needed
+5. Sass needs some tidying (could switch to css modules or styled components)

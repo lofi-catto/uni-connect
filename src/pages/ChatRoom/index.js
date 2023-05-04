@@ -9,6 +9,7 @@ import { getUserById } from 'services/user';
 import MessageList from 'components/MessageList';
 import MessageInput from 'components/MessageInput';
 import RoomTitle from 'components/ChatRoom/RoomTitle';
+import SideBar from 'components/ChatRoom/SideBar';
 
 function ChatRoom() {
   const { chatRoomId } = useParams();
@@ -65,13 +66,7 @@ function ChatRoom() {
         <MessageList chatRoomId={chatRoomId} userId={user.id} />
         <MessageInput chatRoomId={chatRoomId} />
       </div>
-      <div className="side-bar">
-        <div className="room-info">
-          <span>
-            <label>Room Code:</label> {chatRoom?.roomCode}
-          </span>
-        </div>
-      </div>
+      <SideBar chatRoom={chatRoom} />
     </div>
   );
 }
