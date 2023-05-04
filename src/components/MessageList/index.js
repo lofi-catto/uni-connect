@@ -1,11 +1,12 @@
+import { useState } from 'react';
 import { useMessages } from 'hooks/useMessages';
 import { useTypingUsers } from 'hooks/useTypingUsers';
 
 function MessageList({ chatRoomId, userId }) {
+  const [senderColorMap, setSenderColorMap] = useState({});
   const messages = useMessages(chatRoomId);
   const typingUsers = useTypingUsers(chatRoomId, userId);
   let lastSenderId = '';
-  const senderColorMap = {};
 
   return (
     <div className="message-list-container">
@@ -21,7 +22,11 @@ function MessageList({ chatRoomId, userId }) {
             const randomColor = Math.floor(Math.random() * 16777215).toString(
               16
             );
-            senderColorMap[x.sender.id] = `#${randomColor}`;
+            const color = `#${randomColor}`;
+            setSenderColorMap((prevSenderColorMap) => ({
+              ...prevSenderColorMap,
+              [x.sender.id]: color,
+            }));
           }
           // grouping consecutive messages in to one user
           let displayName = '';
